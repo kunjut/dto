@@ -22,6 +22,16 @@ public class ProductService {
     private final Integer margin = 5;
     private final String packaging = "Упаковано в лучшем виде";
 
+    public boolean delete(Integer id) {
+        try {
+            productRepository.deleteById(id);
+            return true;
+        } catch (Exception ignore) {
+            return false;
+        }
+    }
+
+
     public void saveAll(List<ProductEntity> productEntities) {
         productRepository.saveAll(productEntities);
     }
@@ -59,10 +69,18 @@ public class ProductService {
         );
     }
 
+    public void pack(ProductDto productDto) {
+        productDto.setPackaging(packaging);
+    }
+
     // делаем наценку
     public void makeMargin(List<ProductDto> list) {
         list.forEach(productDto ->
                 productDto.setSalePrice(productDto.getPurchasePrice() + margin));
+    }
+
+    public void makeMargin(ProductDto productDto) {
+        productDto.setSalePrice(productDto.getPurchasePrice() + margin);
     }
 
 }
